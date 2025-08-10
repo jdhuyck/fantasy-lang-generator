@@ -1,4 +1,4 @@
-## Language Resources - `/api/v1`
+## Language Resources
 
 ### `GET /languages`
 - List all created languages
@@ -21,6 +21,15 @@
 ### `DELETE /languages/{language_id}`
 - Delete a language
 - Response: `204 No Content`
+
+### `GET /languages/{language_id}/diff/{version}`
+- Compare current version with historical version
+
+### `POST /languages/{language_id}/fork`
+- Create a new language based on an existing one
+
+### `GET /templates`
+- List available language templates (e.g. "Khazadûl", "Sindarin")
 
 
 ## Component-Specific Endpoints
