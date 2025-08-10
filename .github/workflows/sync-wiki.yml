@@ -5,31 +5,46 @@ on:
         paths: [ "docs/**" ]
 
 jobs:
-    update-wiki:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
+  generate-and-push-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-            - name: Set up Python
-              uses: actions/setup-python@v4
-              with:
-                python-version: "3.11"
+      - name: Checkout wiki
+        uses: actions/checkout@v3
+        with:
+          repository: jdhuyck/fantasy-lang-generator.wiki
+          path: wiki-repo
 
-            - name: Install dependencies
-              run: pip install PyYAML
-            
-            - name: Merge markdown files
-              run: |
-                python scripts/merge_wiki.py
-                ls -la wiki/ 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      
+      - name: Merge markdown files
+        run: |
+          python scripts/merge_wiki.py
+          echo "Generated files:"
+          ls -la wiki/
 
-            - name: Push to Wiki
-              run: |
-                git clone https://github.com/jdhuyck/fantasy-lang-generator.wiki.git wiki-repo
-                cp wiki/* wiki-repo
-                cd wiki-repo
-                git config --global user.name "GitHub Actions"
-                git config --global user.email "actions@github.com"
-                git add .
-                git commit -m "Auto-generated wiki update from docs" || echo "No changes to commit"
-                git push
+      - name: Sync to Wiki
+        run: |
+          cp wiki/* wiki-repo/
+          cd wiki-repo
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          if git diff-index --quiet HEAD --; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update wiki for docs ($(date + '%Y-%m-%d %H:%M:%S'))"
+            git push
+          fi
+
+      - name: Verify wiki update
+        run: |
+          echo "Wiki was successfully updated:"
+          echo "https://github.com/jdhuyck/fantasy-lang-generator/wiki"
