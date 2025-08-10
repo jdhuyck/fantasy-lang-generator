@@ -23,6 +23,11 @@ jobs:
           path: wiki-repo
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Clean Wiki
+        run: |
+          cd wiki-repo
+          find . -mindepth 1 -not -path './.git*' -delete
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
