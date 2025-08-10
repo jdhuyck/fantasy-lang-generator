@@ -30,6 +30,9 @@ jobs:
           echo "Generated files:"
           ls -la wiki/
 
+      - name: Debug remote
+        run: git remove -v
+
       - name: Sync to Wiki
         env:
           WIKI_PUSH_TOKEN: ${{ secrets.WIKI_PUSH_TOKEN }}
