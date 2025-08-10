@@ -31,9 +31,13 @@ jobs:
           ls -la wiki/
 
       - name: Sync to Wiki
+        env:
+          WIKI_PUSH_TOKEN: ${{ secrets.WIKI_PUSH_TOKEN }}
         run: |
           cp wiki/* wiki-repo/
           cd wiki-repo
+          git remote set-url origin https://${{ github.actor }}:$WIKI_PUSH_TOKEN@github.com/jdhuyck/fantasy-lang-generator.wiki.git
+
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add .
