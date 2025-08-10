@@ -2,7 +2,7 @@ name: Sync Docs to Wiki
 on:
     push:
         branches: [ main ]
-        # paths: [ "docs/**" ]
+        paths: [ "docs/**" ]
 
 permissions:
   contents: write
