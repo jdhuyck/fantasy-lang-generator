@@ -31,7 +31,7 @@ jobs:
           ls -la wiki/
 
       - name: Debug remote
-        run: git remove -v
+        run: git remote -v
 
       - name: Sync to Wiki
         env:
