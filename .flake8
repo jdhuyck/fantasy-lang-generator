@@ -1,0 +1,6 @@
+[flake8]
+exclude =
+    .venv
+    .vscode
+    .dist
+    docs
