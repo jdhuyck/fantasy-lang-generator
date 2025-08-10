@@ -1,0 +1,35 @@
+name: Sync Docs to Wiki
+on:
+    push:
+        branches: [ main ]
+        paths: [ "docs/**" ]
+
+jobs:
+    update-wiki:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: "3.11"
+
+            - name: Install dependencies
+              run: pip install PyYAML
+            
+            - name: Merge markdown files
+              run: |
+                python scripts/merge_wiki.py
+                ls -la wiki/ 
+
+            - name: Push to Wiki
+              run: |
+                git clone https://github.com/jdhuyck/fantasy-lang-generator.wiki.git wiki-repo
+                cp wiki/* wiki-repo
+                cd wiki-repo
+                git config --global user.name "GitHub Actions"
+                git config --global user.email "actions@github.com"
+                git add .
+                git commit -m "Auto-generated wiki update from docs" || echo "No changes to commit"
+                git push
