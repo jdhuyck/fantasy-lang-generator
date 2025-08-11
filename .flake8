@@ -4,3 +4,4 @@ exclude =
     .vscode
     .dist
     docs
+    __init__.py
