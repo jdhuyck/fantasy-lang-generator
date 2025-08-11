@@ -1,0 +1,1 @@
+python -m check_jsonschema --schemafile language_schema.json minimal_language.json

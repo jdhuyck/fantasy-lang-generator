@@ -1,0 +1,99 @@
+```json
+{
+  "metadata": {
+    "language_name": "Basic",
+    "creator": "System",
+    "created_at": "2023-11-20T00:00:00Z",
+    "last_modified": "2023-11-20T00:00:00Z",
+    "version": 1.0,
+    "description": "Minimal template language",
+    "tags": ["template", "minimal"]
+  },
+  "phonology": {
+    "consonants": {
+      "stops": ["p", "t", "k"],
+      "fricatives": ["s"],
+      "nasals": ["m", "n"],
+      "liquids": ["l"],
+      "constraints": {
+        "initial_clusters": [],
+        "forbidden_clusters": ["tk", "pk"]
+      }
+    },
+    "vowels": {
+      "short": ["a", "i", "u"],
+      "long": [],
+      "diphthongs": []
+    },
+    "syllable": {
+      "structure": "CV",
+      "stress_pattern": "penultimate"
+    },
+    "phonotactics": {
+      "max_initial_consonants": 1,
+      "max_final_consonants": 0,
+      "vowel_harmony": false
+    }
+  },
+  "vocabulary": {
+    "base_words": {
+      "water": "pa",
+      "fire": "ti",
+      "human": "lu"
+    },
+    "word_formation_rules": {
+      "diminutive": "-ki"
+    },
+    "semantic_fields": {
+      "nature": {
+        "tree": "sak",
+        "stone": "tun"
+      }
+    }
+  },
+  "grammar": {
+    "word_order": "SVO",
+    "noun": {
+      "cases": ["nominative"],
+      "genders": [],
+      "plural_forms": [
+        {
+          "pattern": "add_suffix",
+          "suffix": "-n"
+        }
+      ]
+    },
+    "verb": {
+      "tenses": ["present"],
+      "conjugation_patterns": {
+        "regular": {
+          "present": "-a"
+        }
+      }
+    },
+    "adjectives": {
+      "position": "prenominal"
+    }
+  },
+  "cultural_influences": {
+    "environment": "forest",
+    "technology_level": 2,
+    "social_structure": "tribal",
+    "values": ["simplicity"],
+    "taboos": [],
+    "contact_languages": []
+  },
+  "derived_content": {
+    "generated_words": [
+      {
+        "word": "paki",
+        "meaning": "small water",
+        "components": ["pa", "-ki"],
+        "confidence": 0.9
+      }
+    ],
+    "generation_parameters": {
+      "model_version": "minimal-v1"
+    }
+  }
+}
