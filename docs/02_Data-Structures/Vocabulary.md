@@ -1,5 +1,3 @@
-# Vocabulary Structure
-
 ## Word Storage Approach
 
 ```mermaid
@@ -18,7 +16,6 @@ interface Vocabulary {
         diminutive?: string;
         augmentative?: string;
         material?: string;
-        // Affixes
     };
     semantic_fields: Record<string, Record<string, string>>;
 }

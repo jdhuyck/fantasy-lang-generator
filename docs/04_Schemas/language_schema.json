@@ -46,6 +46,27 @@
                     "type": "array",
                     "items": { "type": "string" },
                     "description": "Categorization tags for the language"
+                },
+                "parent_id": {
+                    "type": "string",
+                    "description": "Original language ID if forked"
+                },
+                "original_creator": {
+                    "type": "string",
+                    "description": "Creator of original language for attribution"
+                },
+                "version_history": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "version": { "type": "number" },
+                            "modified_at": { "type": "string", "format": "date-time" },
+                            "modified_by": { "type": "string" },
+                            "changeset": { "type": "string" }
+                        },
+                        "required": ["version", "modified_at", "modified_by"]
+                    }
                 }
             },
             "required": ["language_name", "creator", "created_at"],

@@ -1,5 +1,3 @@
-# Metadata Structure
-
 ## Purpose
 Contains administrative information about the language.
 
@@ -14,5 +12,9 @@ interface Metadata {
     version: number;
     description?: string;
     tags: string[];
+
+    parent_id?: string;
+    original_creator?: string;
+    version_history: VersionHistoryEntry[];
 }
 ```

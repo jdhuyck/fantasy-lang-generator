@@ -1,5 +1,3 @@
-# Phonology Structure
-
 ## Components
 
 ```mermaid

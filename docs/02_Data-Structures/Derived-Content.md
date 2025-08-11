@@ -1,5 +1,3 @@
-# Derived Content Structure
-
 ## Purpose
 Stores ML-generated content that's derived from other language components.
 

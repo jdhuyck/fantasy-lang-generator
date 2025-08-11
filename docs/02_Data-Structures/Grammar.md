@@ -1,5 +1,3 @@
-# Grammar Structure
-
 ## Core elements
 
 ```mermaid

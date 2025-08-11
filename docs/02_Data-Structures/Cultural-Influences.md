@@ -1,5 +1,3 @@
-# Cultural Influences Structure
-
 ## Purpose
 Documents how a culture shapes language development, affecting:
 - Word connotations
