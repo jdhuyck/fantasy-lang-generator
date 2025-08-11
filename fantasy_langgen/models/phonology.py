@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class ConsonantConstraints(BaseModel):
@@ -14,18 +14,38 @@ class ConsonantInventory(BaseModel):
     liquids: List[str]
     constraints: ConsonantConstraints = Field(default_factory=ConsonantConstraints)  # noqa:E501
 
+    @field_validator("stops", "fricatives", "nasals", "liquids")
+    def validate_phonemes(cls, v):
+        for phoneme in v:
+            if not phoneme.isalpha() or not phoneme.islower():
+                raise ValueError(f"Invalid phoneme: {phoneme}. Must be lowercase letters")
+            return v
+
+    @model_validator(mode="after")
+    def validate_clusters(self):
+        for cluster in self.constraints.get("initial_clusters", []):
+            if not all(c in self.stops + self.fricatives + self.nasals + self.liquids for c in cluster):
+                raise ValueError(f"Invalid cluster '{cluster}' contains non-consonants")
+        return self
+
 
 class VowelInventory(BaseModel):
     short: List[str]
     long: List[str] = Field(default_factory=list)
     diphthongs: List[str] = Field(default_factory=list)
 
+    @model_validator(mode="after")
+    def validate_vowels(self):
+        if any(len(v) > 1 for v in self.short):
+            raise ValueError("Short vowels must be a single characters")
+        return self
+
 
 class SyllableStructure(BaseModel):
-    structure: str = Field(default="CV", regex=r"^[CV()]+$")
+    structure: str = Field(default="CV", pattern=r"^[CV()]+$")
     stress_pattern: str = Field(
         default="penultimate",
-        regex="^(initial|penultimate|ultimate|none)$"
+        pattern="^(initial|penultimate|ultimate|none)$"
     )
 
 

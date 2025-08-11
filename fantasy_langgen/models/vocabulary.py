@@ -1,5 +1,5 @@
 from typing import Dict, Optional
-from pydantic import Field, BaseModel
+from pydantic import Field, BaseModel, field_validator
 
 
 class WordFormationRules(BaseModel):
@@ -7,8 +7,21 @@ class WordFormationRules(BaseModel):
     augmentative: Optional[str] = None
     material: Optional[str] = None
 
+    @field_validator("diminutive", "augmentative", "materials")
+    def validate_affixes(cls, v):
+        if v is not None and not (v.startswith('-') or v.endswith('-')):
+            raise ValueError("Affixes must start or end with hyphen")
+        return v
+
 
 class Vocabulary(BaseModel):
     base_words: Dict[str, str] = Field(default_factory=dict)
     word_formation_rules: WordFormationRules = Field(default_factory=WordFormationRules)  # noqa:E501
     semantic_fields: Dict[str, Dict[str, str]] = Field(default_factory=dict)
+
+    @field_validator("base_words")
+    def validate_words(cls, v):
+        for word, translation in v.items():
+            if not word.isalpha() or not translation.isalpha():
+                raise ValueError("Words must contain only letters")
+        return v

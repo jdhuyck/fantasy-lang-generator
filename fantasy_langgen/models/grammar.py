@@ -1,5 +1,5 @@
 from typing import List, Dict, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class PluralForm(BaseModel):
@@ -26,7 +26,7 @@ class VerbGrammar(BaseModel):
 
 
 class AdjectiveGrammar(BaseModel):
-    position: str = Field(default="prenominal", regex="^(prenominal|postnominal)$")  # noqa:E501
+    position: str = Field(default="prenominal", pattern="^(prenominal|postnominal)$")  # noqa:E501
     comparative: Optional[str] = None
     superlative: Optional[str] = None
 
@@ -34,8 +34,21 @@ class AdjectiveGrammar(BaseModel):
 class Grammar(BaseModel):
     word_order: str = Field(
         default="SOV",
-        regex="^(SOV|SVO|VSO|VOS|OVS|OSV)$"
+        pattern="^(SOV|SVO|VSO|VOS|OVS|OSV)$"
     )
     noun: NounGrammar = Field(default_factory=NounGrammar)
     verb: VerbGrammar = Field(default_factory=VerbGrammar)
     adjectives: AdjectiveGrammar = Field(default_factory=AdjectiveGrammar)
+
+    @field_validator("word_order")
+    def validate_word_order(cls, v):
+        valid_orders = ["SOV", "SVO", "VSO", "VOS", "OVS", "OSV"]
+        if v not in valid_orders:
+            raise ValueError(f"Invalid word order. Must be one of: {valid_orders}")
+        return v
+
+    @model_validator(mode="after")
+    def validate_agreement(self):
+        if "genders" in self.noun and "gender" not in self.verb.get("conjugation_patterns", {}):
+            raise ValueError("Verb conjugations must account for noun genders")
+        return self
